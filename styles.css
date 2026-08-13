@@ -170,13 +170,6 @@ nav.site-nav a:hover { opacity: 1; color: var(--orange); }
   flex-wrap: wrap;
 }
 
-.hero-photo {
-  width: 100%;
-  height: auto;
-  max-height: 640px;
-  object-fit: cover;
-}
-
 /* Ticker */
 
 .ticker {
