@@ -169,8 +169,9 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow-pill);
 }
 
-.navbar-logo { display: flex; align-items: center; }
+.navbar-logo { display: flex; align-items: center; flex-shrink: 0; }
 .navbar-logo img { height: 30px; width: auto; }
+.navbar-cta .cta-short { display: none; }
 
 .navbar-links {
   display: flex;
@@ -449,7 +450,7 @@ img { max-width: 100%; display: block; }
 
 .merch-teaser {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: var(--sp-10);
   align-items: center;
   padding: var(--sp-10);
@@ -656,8 +657,12 @@ img { max-width: 100%; display: block; }
 
 @media (max-width: 720px) {
   .navbar-links { display: none; }
-  .navbar { padding: 8px 8px 8px 16px; }
+  .navbar { padding: 8px 8px 8px 16px; gap: 12px; }
+  .navbar-logo img { height: 24px; }
+  .navbar-cta { padding: 8px 14px; font-size: var(--fs-micro); }
   .footer-top .navbar-links { display: none; }
+  .stat-card { min-height: 112px; padding: 18px 16px 14px; }
+  .merch-tile { font-size: 15px; padding: 12px; }
 }
 
 @media (max-width: 640px) {
@@ -665,4 +670,9 @@ img { max-width: 100%; display: block; }
   .section-header-aside { max-width: none; }
   .hero-facts { gap: 32px; }
   .legal-body { gap: var(--sp-10); }
+}
+
+@media (max-width: 400px) {
+  .navbar-cta .cta-full { display: none; }
+  .navbar-cta .cta-short { display: inline; }
 }
