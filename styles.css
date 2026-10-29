@@ -20,7 +20,7 @@
   --grid-line: color-mix(in srgb, var(--text-on-dark) 7%, transparent);
   --glow-acid: color-mix(in srgb, var(--acid-500) 16%, transparent);
   --glow-forest: color-mix(in srgb, var(--forest-500) 75%, transparent);
-  --ring-acid: color-mix(in srgb, var(--acid-500) 10%, transparent);
+  --lane: color-mix(in srgb, var(--acid-500) 20%, transparent);
 
   /* type */
   --font-display: 'Fraunces', serif;
@@ -84,6 +84,7 @@ img { max-width: 100%; display: block; }
 /* ---------- layout shell ---------- */
 
 .page-shell {
+  overflow-x: clip;
   padding: var(--page-inset);
   display: flex;
   flex-direction: column;
@@ -115,7 +116,7 @@ img { max-width: 100%; display: block; }
 }
 
 .frame-dark .container { padding-left: 0; padding-right: 0; }
-.frame-dark > *:not(.grid-lines) { position: relative; }
+.frame-dark > *:not(.grid-lines):not(.track-art) { position: relative; }
 .frame-dark h1, .frame-dark h2 { color: var(--text-on-dark); }
 .frame-dark h1 em, .frame-dark h2 em { color: var(--acid-500); }
 
@@ -129,16 +130,52 @@ img { max-width: 100%; display: block; }
   );
 }
 
-/* concentric rings, like a track seen from above */
-.hero-frame::before {
-  content: "";
+/* running track lanes bleeding off the corner of the hero */
+.track-art {
   position: absolute;
-  inset: 0;
+  top: -150px;
+  right: -340px;
+  width: 1200px;
+  max-width: none;
+  height: auto;
+  transform: rotate(-12deg);
   pointer-events: none;
-  background: repeating-radial-gradient(circle at 94% 6%, transparent 0 46px, var(--ring-acid) 46px 47px);
-  -webkit-mask-image: radial-gradient(65% 70% at 94% 6%, #000, transparent 75%);
-  mask-image: radial-gradient(65% 70% at 94% 6%, #000, transparent 75%);
 }
+.track-art rect { fill: none; stroke: var(--lane); stroke-width: 1.5; }
+
+.eyebrow {
+  margin: 56px auto 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--acid-500);
+}
+.hero-frame .eyebrow + h1 { margin-top: 18px; }
+
+/* race tape strip */
+.tape {
+  overflow: hidden;
+  margin: 14px -40px;
+  background: var(--acid-500);
+  color: var(--ink-900);
+  border-block: 2px solid var(--ink-900);
+  transform: rotate(-1.2deg);
+}
+.tape-track { display: flex; width: max-content; animation: tape 45s linear infinite; }
+.tape-track span {
+  flex: none;
+  padding: 14px 0;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+@keyframes tape { to { transform: translateX(-50%); } }
 
 /* ---------- buttons ---------- */
 
@@ -344,32 +381,66 @@ img { max-width: 100%; display: block; }
   margin-top: var(--sp-10);
 }
 
+/* run cards styled as race bibs: pin holes, perforation, big distance */
 .program-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: var(--card-pad);
-  border-radius: var(--r-md);
+  padding: 28px var(--card-pad) var(--card-pad);
+  border-radius: var(--r-sm);
   box-shadow: var(--shadow-card);
+  color: var(--ink-900);
+}
+.program-card::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle, var(--paper-000) 0 4px, color-mix(in srgb, var(--ink-900) 28%, transparent) 4px 5px, transparent 5px) 0 0 / 12px 12px no-repeat,
+    radial-gradient(circle, var(--paper-000) 0 4px, color-mix(in srgb, var(--ink-900) 28%, transparent) 4px 5px, transparent 5px) 100% 0 / 12px 12px no-repeat,
+    radial-gradient(circle, var(--paper-000) 0 4px, color-mix(in srgb, var(--ink-900) 28%, transparent) 4px 5px, transparent 5px) 0 100% / 12px 12px no-repeat,
+    radial-gradient(circle, var(--paper-000) 0 4px, color-mix(in srgb, var(--ink-900) 28%, transparent) 4px 5px, transparent 5px) 100% 100% / 12px 12px no-repeat;
 }
 .program-card--acid { background: var(--acid-500); }
-.program-card--forest { background: var(--forest-700); }
+.program-card--forest { background: var(--forest-700); color: var(--text-on-dark); }
 .program-card.program-card--forest h3 { color: var(--text-on-dark); }
 .program-card.program-card--forest p { color: var(--text-on-dark-muted); }
-.program-card.program-card--forest .program-card-badge { color: var(--acid-500); }
+.program-card.program-card--forest .program-card-badge,
+.program-card.program-card--forest .bib-number { color: var(--acid-500); }
 
-.program-card-badge {
+.bib-head {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding-bottom: 14px;
+  border-bottom: 2px dashed color-mix(in srgb, currentColor 35%, transparent);
+}
+.program-card-badge {
   font-family: var(--font-mono);
   font-weight: 800;
   font-size: 18px;
   letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
   color: var(--ink-900);
 }
-.flip { display: inline-block; transform: scaleX(-1); }
+.bib-number {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(88px, 9vw, 132px);
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+  color: var(--ink-900);
+}
+.bib-number span {
+  margin-left: 6px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+}
 .program-card h3 { font-size: var(--fs-display-3); }
 .program-card p { font-size: var(--fs-body-sm); font-weight: 400; color: var(--ink-700); }
 
@@ -699,8 +770,15 @@ img { max-width: 100%; display: block; }
 .hero-frame .reveal.d3 { animation-delay: 360ms; }
 .hero-frame .reveal.d4 { animation-delay: 480ms; }
 .hero-frame .reveal.d5 { animation-delay: 600ms; }
+.hero-frame .reveal.d6 { animation-delay: 720ms; }
+
+@media (min-width: 721px) {
+  .program-card--acid { transform: rotate(-1deg); }
+  .program-card--forest { transform: rotate(1deg); }
+}
 
 @media (prefers-reduced-motion: reduce) {
+  .tape-track { animation: none; }
   .hero-frame .reveal { animation: none; }
   .tee-carousel img { animation: none; opacity: 0; }
   .tee-carousel img:nth-child(2) { opacity: 1; }
