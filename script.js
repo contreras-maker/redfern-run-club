@@ -1,27 +1,6 @@
-// Redfern Run Club — scroll reveal + count-up (progressive enhancement)
+// Redfern Run Club — count-up for the hero stats (progressive enhancement)
 
 (function () {
-  var revealEls = document.querySelectorAll('.reveal');
-  revealEls.forEach(function (el) { el.classList.add('reveal-init'); });
-
-  var trackDivider = document.querySelector('.track-divider');
-
-  var observer = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
-  );
-
-  revealEls.forEach(function (el) { observer.observe(el); });
-  if (trackDivider) observer.observe(trackDivider);
-
-  // Count-up stats
   var statEls = document.querySelectorAll('.stat-number[data-count]');
   var statObserver = new IntersectionObserver(
     function (entries) {
